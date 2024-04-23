@@ -42,12 +42,12 @@ def game_over():
     bg_img = pg.image.load("fig/pg_bg.jpg")    
     ckk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)  # 泣いているこうかとんの読み込み
     clock = pg.time.Clock()
-    screen.blit(bg_img, [0, 0]) 
-    kurai=pg.Surface((WIDTH,HEIGHT))
-    kurai.set_alpha(200)
+    screen.blit(bg_img, [0, 0])  # 背景を再描画
+    kurai=pg.Surface((WIDTH,HEIGHT))  
+    kurai.set_alpha(200)  # 背景を暗くする
     screen.blit(kurai,[0,0])
     fonto = pg.font.Font(None,80)
-    txt=fonto.render("Game Over",True,(255,255,255))
+    txt=fonto.render("Game Over",True,(255,255,255))  # Game Overを描画する
     screen.blit(txt,[WIDTH/2,HEIGHT/2])
     screen.blit(ckk_img, (WIDTH/2-150,HEIGHT/2-30))
     pg.display.update()
