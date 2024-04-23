@@ -14,6 +14,22 @@ sum_mv_dic={   #移動量辞書（押下キー：移動量）
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
+def check_bound(obj_rct:pg.Rect) -> tuple[bool,bool]:
+    """
+    こうかとんRect　または　爆弾Rectと画面内外判定用関数
+    引数：こうかとんRect　または　爆弾Rect
+    戻り値：横方向判定、縦方向判定（True画面内；False：画面外）
+    """
+    yoko,tate=True,True
+    if obj_rct.left < 0 or WIDTH < obj_rct.right:
+        yoko=False
+    if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
+        tate=False
+    return yoko,tate
+
+
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -25,6 +41,7 @@ def main():
     tmr = 0
     bom_enn=pg.Surface((20,20))
     pg.draw.circle(bom_enn,(255,0,0),(10,10),10)
+    bom_enn.set_colorkey((0,0,0))
     bom_rct=bom_enn.get_rect()
     bom_rct.center=random.randint(0,WIDTH),random.randint(0,HEIGHT)
     vx,vy=5,5
@@ -43,9 +60,16 @@ def main():
                 sum_mv[1]+=v[1]
         
         kk_rct.move_ip(sum_mv)
+        if check_bound(kk_rct)!=(True,True):
+            kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
         screen.blit(kk_img, kk_rct)
         screen.blit(bom_enn,bom_rct)
         bom_rct.move_ip(vy,vx)
+        yoko,tate=check_bound(bom_rct)
+        if not tate:
+            vx*=-1
+        if not yoko:
+            vy*=-1
 
         pg.display.update()
         tmr += 1
