@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 import pygame as pg
 
 
@@ -22,6 +23,12 @@ def main():
     kk_rct.center = 900, 400
     clock = pg.time.Clock()
     tmr = 0
+    bom_enn=pg.Surface((20,20))
+    pg.draw.circle(bom_enn,(255,0,0),(10,10),10)
+    bom_rct=bom_enn.get_rect()
+    bom_rct.center=random.randint(0,WIDTH),random.randint(0,HEIGHT)
+    vx,vy=5,5
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -37,6 +44,9 @@ def main():
         
         kk_rct.move_ip(sum_mv)
         screen.blit(kk_img, kk_rct)
+        screen.blit(bom_enn,bom_rct)
+        bom_rct.move_ip(vy,vx)
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
