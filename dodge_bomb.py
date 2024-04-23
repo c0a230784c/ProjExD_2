@@ -12,6 +12,8 @@ sum_mv_dic={   #移動量辞書（押下キー：移動量）
     pg.K_LEFT:(-5,0),
     pg.K_RIGHT:(+5,0)
 }
+
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -38,7 +40,7 @@ def game_over():
     """
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("fig/pg_bg.jpg")    
-    ckk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
+    ckk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)  # 泣いているこうかとんの読み込み
     clock = pg.time.Clock()
     screen.blit(bg_img, [0, 0]) 
     kurai=pg.Surface((WIDTH,HEIGHT))
@@ -50,6 +52,17 @@ def game_over():
     screen.blit(ckk_img, (WIDTH/2-150,HEIGHT/2-30))
     pg.display.update()
     clock.tick(1/5)
+
+
+def kasoku():
+    """
+    時間経過で爆弾が加速する
+    １０段階で加速する
+    """
+    acc = [a for a in range(1,11)]
+    for r in range(1,11):
+        bb_img=pg.Surface((20*r,20*r))
+        pg.draw.circle(bb,(255,0,0),(10*r,10*r),10*r)
 
 
 def main():  
@@ -69,7 +82,6 @@ def main():
     bom_rct.center=random.randint(0,WIDTH),random.randint(0,HEIGHT)
     vx,vy=5,5
 
-    
 
     while True:
         for event in pg.event.get():
