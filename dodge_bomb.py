@@ -2,6 +2,7 @@ import os
 import sys
 import random
 import pygame as pg
+import time
 
 
 WIDTH, HEIGHT = 1600, 900
@@ -28,13 +29,35 @@ def check_bound(obj_rct:pg.Rect) -> tuple[bool,bool]:
     return yoko,tate
 
 
+def game_over(): 
+    """
+    ゲームオーバーしたときに呼び出す関数
+    背景が暗くなりGame Overと表示され
+    泣いているこうかとんが表示される
+    引数および戻り値はない
+    """
+    screen = pg.display.set_mode((WIDTH, HEIGHT))
+    bg_img = pg.image.load("fig/pg_bg.jpg")    
+    ckk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
+    clock = pg.time.Clock()
+    screen.blit(bg_img, [0, 0]) 
+    kurai=pg.Surface((WIDTH,HEIGHT))
+    kurai.set_alpha(200)
+    screen.blit(kurai,[0,0])
+    fonto = pg.font.Font(None,80)
+    txt=fonto.render("Game Over",True,(255,255,255))
+    screen.blit(txt,[WIDTH/2,HEIGHT/2])
+    screen.blit(ckk_img, (WIDTH/2-150,HEIGHT/2-30))
+    pg.display.update()
+    clock.tick(1/5)
 
 
-def main():
+def main():  
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("fig/pg_bg.jpg")    
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
+    ckk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
     clock = pg.time.Clock()
@@ -46,12 +69,14 @@ def main():
     bom_rct.center=random.randint(0,WIDTH),random.randint(0,HEIGHT)
     vx,vy=5,5
 
+    
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
         if kk_rct.colliderect(bom_rct):
-            print("Game over")
+            game_over()
             return
         screen.blit(bg_img, [0, 0]) 
 
